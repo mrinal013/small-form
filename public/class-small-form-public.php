@@ -1,4 +1,9 @@
 <?php
+/**
+ * Here, namespace is SF_Public because, Public is reserverd word in PHP.
+ * Reference: https://www.php.net/manual/en/reserved.keywords.php
+ */
+namespace SF_Public;
 
 /**
  * The public-facing functionality of the plugin.

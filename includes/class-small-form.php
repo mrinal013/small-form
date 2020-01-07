@@ -1,4 +1,8 @@
 <?php
+namespace Includes;
+
+use Admin\Small_Form_Admin;
+use SF_Public\Small_Form_Public;
 
 /**
  * The file that defines the core plugin class
@@ -73,7 +77,8 @@ class Small_Form {
 			$this->version = '1.0.0';
 		}
 		$this->plugin_name = 'small-form';
-
+		
+		// spl_autoload_register(array($this, 'small_form_autoload'));
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -84,43 +89,12 @@ class Small_Form {
 	/**
 	 * Load the required dependencies for this plugin.
 	 *
-	 * Include the following files that make up the plugin:
-	 *
-	 * - Small_Form_Loader. Orchestrates the hooks of the plugin.
-	 * - Small_Form_i18n. Defines internationalization functionality.
-	 * - Small_Form_Admin. Defines all hooks for the admin area.
-	 * - Small_Form_Public. Defines all hooks for the public side of the site.
-	 *
-	 * Create an instance of the loader which will be used to register the hooks
-	 * with WordPress.
+	 * Create an instance of the loader which will be used to register the hooks with WordPress.
 	 *
 	 * @since    1.0.0
 	 * @access   private
 	 */
 	private function load_dependencies() {
-
-		/**
-		 * The class responsible for orchestrating the actions and filters of the
-		 * core plugin.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-small-form-loader.php';
-
-		/**
-		 * The class responsible for defining internationalization functionality
-		 * of the plugin.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-small-form-i18n.php';
-
-		/**
-		 * The class responsible for defining all actions that occur in the admin area.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-small-form-admin.php';
-
-		/**
-		 * The class responsible for defining all actions that occur in the public-facing
-		 * side of the site.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-small-form-public.php';
 
 		$this->loader = new Small_Form_Loader();
 
@@ -151,9 +125,9 @@ class Small_Form {
 	 * @access   private
 	 */
 	private function define_admin_hooks() {
-
+		
 		$plugin_admin = new Small_Form_Admin( $this->get_plugin_name(), $this->get_version() );
-
+		
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 

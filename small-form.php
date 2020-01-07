@@ -1,5 +1,7 @@
 <?php
-
+use Includes\Small_Form_Activator;
+use Includes\Small_Form_Deactivator;
+use Includes\Small_Form;
 /**
  * The plugin bootstrap file
  *
@@ -15,7 +17,7 @@
  * @wordpress-plugin
  * Plugin Name:       Small Form
  * Plugin URI:        https://github.com/mrinal013/small-form
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
+ * Description:       This is a very small form plugin for developer test in gain solutions.
  * Version:           1.0.0
  * Author:            Mrinal Haque
  * Author URI:        mrinalbd.com
@@ -37,46 +39,66 @@ if ( ! defined( 'WPINC' ) ) {
  */
 define( 'SMALL_FORM_VERSION', '1.0.0' );
 
-/**
- * The code that runs during plugin activation.
- * This action is documented in includes/class-small-form-activator.php
- */
-function activate_small_form() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-small-form-activator.php';
-	Small_Form_Activator::activate();
+class Small_Form_Run {
+	public function __construct() {
+		spl_autoload_register(array($this, 'small_form_autoload'));
+
+		register_activation_hook( __CLASS__, 'activate_small_form' );
+		register_deactivation_hook( __CLASS__, 'deactivate_small_form');
+
+		$this->run_small_form();
+	}
+
+	/**
+	 * Load necessary classes on demand.
+	 */
+	public function small_form_autoload($class) {
+			$lowercase_class = strtolower($class);
+			$folder_class_seperator = explode("\\", $lowercase_class);
+			$folder_name = str_replace( 'sf_', '', $folder_class_seperator[0]);
+			if( !empty($folder_class_seperator[1]) ) {
+				$class_name = str_replace('_', '-', $folder_class_seperator[1]);
+				$filename = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'small-form' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . 'class-' . $class_name . '.php';
+				if( file_exists($filename)) {
+					require_once($filename);
+				}
+			}
+	}
+
+	/**
+	 * The code that runs during plugin activation.
+	 * This action is documented in includes/class-small-form-activator.php
+	 */
+	public function activate_small_form() {
+		Small_Form_Activator::activate();
+	}
+
+	/**
+	 * The code that runs during plugin deactivation.
+	 * This action is documented in includes/class-small-form-deactivator.php
+	 */
+	public function deactivate_small_form() {
+		Small_Form_Deactivator::deactivate();
+	}
+
+	/**
+	 * Begins execution of the plugin.
+	 *
+	 * Since everything within the plugin is registered via hooks,
+	 * then kicking off the plugin from this point in the file does
+	 * not affect the page life cycle.
+	 *
+	 * @since    1.0.0
+	 */
+	function run_small_form() {
+
+		$plugin = new Small_Form();
+		$plugin->run();
+	
+	}
 }
 
 /**
- * The code that runs during plugin deactivation.
- * This action is documented in includes/class-small-form-deactivator.php
+ * class Small_Form_Run instantiate outside for the sake of SOLID priciple.
  */
-function deactivate_small_form() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-small-form-deactivator.php';
-	Small_Form_Deactivator::deactivate();
-}
-
-register_activation_hook( __FILE__, 'activate_small_form' );
-register_deactivation_hook( __FILE__, 'deactivate_small_form' );
-
-/**
- * The core plugin class that is used to define internationalization,
- * admin-specific hooks, and public-facing site hooks.
- */
-require plugin_dir_path( __FILE__ ) . 'includes/class-small-form.php';
-
-/**
- * Begins execution of the plugin.
- *
- * Since everything within the plugin is registered via hooks,
- * then kicking off the plugin from this point in the file does
- * not affect the page life cycle.
- *
- * @since    1.0.0
- */
-function run_small_form() {
-
-	$plugin = new Small_Form();
-	$plugin->run();
-
-}
-run_small_form();
+new Small_Form_Run();

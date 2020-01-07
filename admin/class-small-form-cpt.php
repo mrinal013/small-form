@@ -1,118 +1,18 @@
 <?php
 namespace Admin;
 
-use Admin\Small_Form_CPT;
-use Admin\Small_Form_MB;
-/**
- * The admin-specific functionality of the plugin.
- *
- * @link       mrinalbd.com
- * @since      1.0.0
- *
- * @package    Small_Form
- * @subpackage Small_Form/admin
- */
+class Small_Form_CPT {
+    public function __construct() {
+        add_action( 'init', array( $this, 'small_form_cpt' ) );
+    }
 
-/**
- * The admin-specific functionality of the plugin.
- *
- * Defines the plugin name, version, and two examples hooks for how to
- * enqueue the admin-specific stylesheet and JavaScript.
- *
- * @package    Small_Form
- * @subpackage Small_Form/admin
- * @author     Mrinal Haque <mrinalhaque99@gmail.com>
- */
-class Small_Form_Admin {
-
-	/**
-	 * The ID of this plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
-	 */
-	private $plugin_name;
-
-	/**
-	 * The version of this plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
-	 */
-	private $version;
-
-	/**
-	 * Initialize the class and set its properties.
-	 *
-	 * @since    1.0.0
-	 * @param      string    $plugin_name       The name of this plugin.
-	 * @param      string    $version    The version of this plugin.
-	 */
-	public function __construct( $plugin_name, $version ) {
-
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
-
-		new Small_Form_CPT();
-		new Small_Form_MB();
-
-	}
-
-	/**
-	 * Register the stylesheets for the admin area.
-	 *
-	 * @since    1.0.0
-	 */
-	public function enqueue_styles() {
-
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Small_Form_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Small_Form_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/small-form-admin.css', array(), $this->version, 'all' );
-
-	}
-
-	/**
-	 * Register the JavaScript for the admin area.
-	 *
-	 * @since    1.0.0
-	 */
-	public function enqueue_scripts() {
-
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Small_Form_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Small_Form_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/small-form-admin.js', array( 'jquery' ), $this->version, false );
-
-	}
-
-	public function small_form_cpt() {
-		$labels = array(
+    public function small_form_cpt() {
+        $labels = array(
 			'name'                  => _x( 'Small Forms', 'Post type general name', 'textdomain' ),
 			'singular_name'         => _x( 'Small Form', 'Post type singular name', 'textdomain' ),
 			'menu_name'             => _x( 'Small Forms', 'Admin Menu text', 'textdomain' ),
 			'name_admin_bar'        => _x( 'Small Form', 'Add New on Toolbar', 'textdomain' ),
-			'add_new'               => __( 'Add New', 'textdomain' ),
+			'add_new'               => __( 'Add New Small Form', 'textdomain' ),
 			'add_new_item'          => __( 'Add New Small Form', 'textdomain' ),
 			'new_item'              => __( 'New Small Form', 'textdomain' ),
 			'edit_item'             => __( 'Edit Small Form', 'textdomain' ),
@@ -151,6 +51,5 @@ class Small_Form_Admin {
 		);
 	 
 		register_post_type( 'small-form', $args );
-	}
-
+    }
 }

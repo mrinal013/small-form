@@ -3,7 +3,8 @@ namespace Admin;
 
 class Small_Form_CPT {
     public function __construct() {
-        add_action( 'init', array( $this, 'small_form_cpt' ) );
+		add_action( 'init', array( $this, 'small_form_cpt' ) );
+		add_filter('post_updated_messages', array( $this, 'small_form_messages'));
     }
 
     public function small_form_cpt() {
@@ -35,21 +36,29 @@ class Small_Form_CPT {
 		);
 	 
 		$args = array(
-			'labels'             => $labels,
-			'menu_icon' => 'dashicons-groups',
-			'public'             => true,
-			'publicly_queryable' => true,
-			'show_ui'            => true,
-			'show_in_menu'       => true,
-			'query_var'          => true,
-			'rewrite'            => array( 'slug' => 'small-form' ),
-			'capability_type'    => 'post',
-			'has_archive'        => true,
-			'hierarchical'       => true,
-			'menu_position'      => null,
-			'supports'           => array( 'title' ),
+			'labels'            => $labels,
+			'menu_icon' 		=> 'dashicons-groups',
+			'public'            => false,
+			'publicly_queryable'=> false,
+			'show_ui'           => true,
+			'show_in_menu'      => true,
+			'query_var'         => true,
+			'rewrite'           => array( 'slug' => 'small-form' ),
+			'capability_type'   => 'post',
+			'has_archive'       => true,
+			'hierarchical'      => true,
+			'menu_position'     => null,
+			'supports'          => array( 'title' ),
 		);
 	 
 		register_post_type( 'small-form', $args );
-    }
+	}
+	
+	public function small_form_messages( $messages ) {
+		$messages['small-form'] = array(
+			1 => __('Small Form Updated.', 'small-form'),
+			6 => __('Small Form Published.', 'small-form'),
+		);
+		return $messages;
+	}
 }

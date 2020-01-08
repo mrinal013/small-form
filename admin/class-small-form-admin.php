@@ -3,6 +3,8 @@ namespace Admin;
 
 use Admin\Small_Form_CPT;
 use Admin\Small_Form_MB;
+use Admin\Small_Form_Shortcode;
+use Admin\Small_Form_Table;
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -55,8 +57,15 @@ class Small_Form_Admin {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 
+
 		new Small_Form_CPT();
 		new Small_Form_MB();
+		new Small_Form_Shortcode();
+
+		if( ! class_exists( 'WP_List_Table' ) ) {
+            require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
+        }
+		new Small_Form_Entry();
 
 	}
 

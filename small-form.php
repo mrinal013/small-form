@@ -43,9 +43,6 @@ class Small_Form_Run {
 	public function __construct() {
 		spl_autoload_register(array($this, 'small_form_autoload'));
 
-		register_activation_hook( __CLASS__, 'activate_small_form' );
-		register_deactivation_hook( __CLASS__, 'deactivate_small_form');
-
 		$this->run_small_form();
 	}
 
@@ -65,21 +62,7 @@ class Small_Form_Run {
 			}
 	}
 
-	/**
-	 * The code that runs during plugin activation.
-	 * This action is documented in includes/class-small-form-activator.php
-	 */
-	public function activate_small_form() {
-		Small_Form_Activator::activate();
-	}
-
-	/**
-	 * The code that runs during plugin deactivation.
-	 * This action is documented in includes/class-small-form-deactivator.php
-	 */
-	public function deactivate_small_form() {
-		Small_Form_Deactivator::deactivate();
-	}
+	
 
 	/**
 	 * Begins execution of the plugin.
@@ -97,7 +80,24 @@ class Small_Form_Run {
 	
 	}
 }
+register_activation_hook( __FILE__, 'activate_small_form' );
+register_deactivation_hook( __FILE__, 'deactivate_small_form');
 
+/**
+ * The code that runs during plugin activation.
+ * This action is documented in includes/class-small-form-activator.php
+ */
+function activate_small_form() {
+	Small_Form_Activator::activate();
+}
+
+/**
+ * The code that runs during plugin deactivation.
+ * This action is documented in includes/class-small-form-deactivator.php
+ */
+function deactivate_small_form() {
+	Small_Form_Deactivator::deactivate();
+}
 /**
  * class Small_Form_Run instantiate outside for the sake of SOLID priciple.
  */

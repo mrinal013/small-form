@@ -4,10 +4,25 @@ namespace Admin;
 
 class Small_Form_MB
 {
-    public function __construct()
-    {
+    public function __construct() {
         add_action('add_meta_boxes', array($this, 'small_form_meta_boxes'));
         add_action('save_post_small-form', array($this, 'small_form_save_meta_box_data'));
+        add_action('rest_api_init', array( $this, 'meta_in_rest') );   
+    }
+
+    public function meta_in_rest() {
+        // register_rest_field ( 'name-of-post-type', 'name-of-field-to-return', array-of-callbacks-and-schema() )
+        register_rest_field( 'small-form', '_small_form_meta', array(
+            'get_callback' => function ( $object ) {
+                //get the id of the post object array
+                $post_id = $object['id'];
+               
+                //return the post meta
+                return get_post_meta( $post_id, '_small_form_meta', true );
+               },
+            'schema' => null,
+            )
+        );
     }
 
     public function small_form_meta_boxes()

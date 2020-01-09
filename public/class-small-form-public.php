@@ -5,6 +5,8 @@
  */
 namespace SF_Public;
 
+use SF_Public\Small_Form_Shortcode;
+
 /**
  * The public-facing functionality of the plugin.
  *
@@ -57,6 +59,8 @@ class Small_Form_Public {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 
+		new Small_Form_Shortcode();
+
 	}
 
 	/**
@@ -100,8 +104,9 @@ class Small_Form_Public {
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
+		wp_enqueue_script( 'vue', 'https://cdn.jsdelivr.net/npm/vue@2.6.11', array(), '2.6.11', true );
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/small-form-public.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/small-form-public.js', array( 'vue' ), $this->version, true );
 
 	}
 

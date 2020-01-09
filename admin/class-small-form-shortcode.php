@@ -3,7 +3,9 @@ namespace Admin;
 
 class Small_Form_Shortcode {
     public function __construct() {
-        add_action('add_meta_boxes', array($this, 'small_form_shortcode'));
+        if( ! empty($_GET['post'] ) ) {
+            add_action('add_meta_boxes', array($this, 'small_form_shortcode'));
+        }
     }
 
     public function small_form_shortcode() {
@@ -18,6 +20,6 @@ class Small_Form_Shortcode {
     }
 
     public function small_form_shortcode_html() {
-        echo 'Hello';
+        echo '[small-form id="' . $_GET['post'] . '"]';
     }
 }

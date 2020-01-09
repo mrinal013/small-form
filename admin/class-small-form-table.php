@@ -38,21 +38,21 @@ class Small_Form_Table extends \WP_List_Table {
     function prepare_items() {
 
         $example_data = array(
-                array(
-                        'id'        => 1,
-                        'user_login'     => 'vasim',
-                        'user_email'    => 'vasim@abc.com'                        
-                ),
-                array(
-                        'id'        => 2,
-                        'user_login'     => 'Asma',
-                        'user_email'    => 'Asma@abc.com'                        
-                ),
-                array(
-                        'id'        => 3,
-                        'user_login'     => 'Nehal',
-                        'user_email'    => 'nehal@abc.com'                        
-                ),
+                // array(
+                //         'id'        => 1,
+                //         'user_login'     => 'vasim',
+                //         'user_email'    => 'vasim@abc.com'                        
+                // ),
+                // array(
+                //         'id'        => 2,
+                //         'user_login'     => 'Asma',
+                //         'user_email'    => 'Asma@abc.com'                        
+                // ),
+                // array(
+                //         'id'        => 3,
+                //         'user_login'     => 'Nehal',
+                //         'user_email'    => 'nehal@abc.com'                        
+                // ),
             );
 
         $columns = $this->get_columns();

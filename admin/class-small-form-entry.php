@@ -25,7 +25,6 @@ class Small_Form_Entry {
 
     public function small_form_table_page() {
         if( class_exists('WP_List_Table')) {
-            echo 'Hello';
             new Small_Form_Table();
         }
     }

@@ -44,11 +44,9 @@ class Small_Form_MB
 
         $small_form_meta = get_post_meta($post->ID, '_small_form_meta', true);
         // var_dump($small_form_meta);
-        $email_label = isset( $small_form_meta['email-label'] ) ? $small_form_meta['email-label'] : '';
-        $email_placeholder = isset( $small_form_meta['email-placeholder'] ) ? $small_form_meta['email-placeholder'] : '';
-        $desc_label = isset( $small_form_meta['desc-label'] ) ? $small_form_meta['desc-label'] : '';
-        $desc_placeholder = isset( $small_form_meta['desc-placeholder'] ) ? $small_form_meta['desc-placeholder'] : '';
-        $submit_text = isset( $small_form_meta['submit-text'] ) ? $small_form_meta['submit-text'] : '';
+        $email_label = isset( $small_form_meta['email_label'] ) ? $small_form_meta['email_label'] : '';
+        $desc_label = isset( $small_form_meta['desc_label'] ) ? $small_form_meta['desc_label'] : '';
+        $submit_text = isset( $small_form_meta['submit_text'] ) ? $small_form_meta['submit_text'] : '';
 
         echo '<h5>' . __('Email Field', 'small-form') . '</h5>';
         echo '<p>' . __('Label', 'small-form');
@@ -56,20 +54,10 @@ class Small_Form_MB
         <input type="text" name="email-label" class="regular-text postbox" value="<?php echo $email_label; ?>">
         </p>
         <?php
-echo '<p>' . __('Placeholder', 'small-form');
-        ?>
-        <input type="text" name="email-placeholder" value="<?php echo $email_placeholder; ?>">
-        </p>
-        <?php
-echo '<h5>' . __('Description Field', 'small-form') . '</h5>';
+        echo '<h5>' . __('Description Field', 'small-form') . '</h5>';
         echo '<p>' . __('Label', 'small-form');
         ?>
         <input type="text" name="desc-label" value="<?php echo $desc_label; ?>">
-        </p>
-        <?php
-echo '<p>' . __('Placeholder', 'small-form');
-        ?>
-        <input type="text" name="desc-placeholder" value="<?php echo $desc_placeholder; ?>">
         </p>
         <?php
         echo '<h5>' . __('Submit button', 'small-form') . '</h5>';
@@ -101,26 +89,18 @@ echo '<p>' . __('Placeholder', 'small-form');
         }
         // store custom fields values
         $small_form_meta = array(
-            'email-label' => '',
-            'email-placeholder' => '',
-            'desc-label' => '',
-            'desc-placeholder' => '',
-            'submit-text' => '',
+            'email_label' => '',
+            'desc_label' => '',
+            'submit_text' => '',
         );
         if (isset($_POST['email-label'])) {
-            $small_form_meta['email-label'] = esc_html($_POST['email-label']);
-        }
-        if (isset($_POST['email-placeholder'])) {
-            $small_form_meta['email-placeholder'] = esc_html($_POST['email-placeholder']);
+            $small_form_meta['email_label'] = esc_html($_POST['email-label']);
         }
         if (isset($_POST['desc-label'])) {
-            $small_form_meta['desc-label'] = esc_html($_POST['desc-label']);
-        }
-        if (isset($_POST['desc-placeholder'])) {
-            $small_form_meta['desc-placeholder'] = esc_html($_POST['desc-placeholder']);
+            $small_form_meta['desc_label'] = esc_html($_POST['desc-label']);
         }
         if (isset($_POST['submit-text'])) {
-            $small_form_meta['submit-text'] = esc_html($_POST['submit-text']);
+            $small_form_meta['submit_text'] = esc_html($_POST['submit-text']);
         }
 
         update_post_meta($post_id, '_small_form_meta', $small_form_meta);

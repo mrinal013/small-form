@@ -60,8 +60,6 @@ class Small_Form_Activator {
         require_once( ABSPATH . '/wp-admin/includes/upgrade.php' );
         dbDelta($sql);
     }
-			// require_once( ABSPATH . '/wp-admin/includes/upgrade.php' );
-        	// dbDelta($sql);
 
 	}
 

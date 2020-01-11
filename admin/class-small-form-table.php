@@ -17,8 +17,9 @@ class Small_Form_Table extends \WP_List_Table {
     function get_columns() {
         $columns = array(
             'id'    => 'ID',
-            'user_login'     => 'User Name',
-            'user_email'   => 'User Email'            
+            'email'   => 'Email',
+            'desc'=> 'Description',
+            'time'=> 'Time'
         );
         return $columns;
     }
@@ -26,9 +27,9 @@ class Small_Form_Table extends \WP_List_Table {
     function column_default( $item, $column_name ) {
         switch( $column_name ) {
             case 'id':
-            case 'user_login':
-            case 'user_email':
-
+            case 'email':
+            case 'desc':
+            case 'time':
                 return $item[ $column_name ];
             default:
                 return print_r( $item, true ) ;
@@ -36,30 +37,19 @@ class Small_Form_Table extends \WP_List_Table {
     }
 
     function prepare_items() {
-
-        $example_data = array(
-                // array(
-                //         'id'        => 1,
-                //         'user_login'     => 'vasim',
-                //         'user_email'    => 'vasim@abc.com'                        
-                // ),
-                // array(
-                //         'id'        => 2,
-                //         'user_login'     => 'Asma',
-                //         'user_email'    => 'Asma@abc.com'                        
-                // ),
-                // array(
-                //         'id'        => 3,
-                //         'user_login'     => 'Nehal',
-                //         'user_email'    => 'nehal@abc.com'                        
-                // ),
-            );
+        global $wpdb;
+        $result = $wpdb->get_results ( "
+            SELECT * 
+            FROM  {$wpdb->prefix}small_form
+        " );
+        $json  = json_encode($result);
+        $array = json_decode($json, true);
 
         $columns = $this->get_columns();
         $hidden = array();
         $sortable = $this->get_sortable_columns();
         $this->_column_headers = array($columns, $hidden, $sortable);
-        $this->items = $example_data;
+        $this->items = $array;
     }
     
 }

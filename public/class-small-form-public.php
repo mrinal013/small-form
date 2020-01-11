@@ -105,8 +105,12 @@ class Small_Form_Public {
 		 * class.
 		 */
 		wp_enqueue_script( 'vue', 'https://cdn.jsdelivr.net/npm/vue@2.6.11', array(), '2.6.11', true );
+		wp_enqueue_script( 'axios', 'https://unpkg.com/axios/dist/axios.min.js', array(), '2.6.11', true );
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/small-form-public.js', array( 'vue' ), $this->version, true );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/small-form-public.js', array( 'vue', 'axios' ), $this->version, true );
+
+		wp_localize_script( $this->plugin_name, 'ajax_object',
+            array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
 
 	}
 

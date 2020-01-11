@@ -1,6 +1,8 @@
 <?php
 namespace Includes;
 
+use Includes\Small_Form_Loader;
+use Includes\Small_Form_i18n;
 use Admin\Small_Form_Admin;
 use SF_Public\Small_Form_Public;
 

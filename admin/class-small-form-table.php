@@ -16,10 +16,11 @@ class Small_Form_Table extends \WP_List_Table {
 
     function get_columns() {
         $columns = array(
-            'id'    => 'ID',
-            'email'   => 'Email',
-            'desc'=> 'Description',
-            'time'=> 'Time'
+            'id'        => __( 'ID','small-form' ),
+            'email'     => __( 'Email', 'small-form' ),
+            'desc'      => __( 'Description', 'small-form' ),
+            'time'      => __( 'Time', 'small-form'),
+            'form'      => __( 'Form', 'small-form'),
         );
         return $columns;
     }
@@ -30,6 +31,7 @@ class Small_Form_Table extends \WP_List_Table {
             case 'email':
             case 'desc':
             case 'time':
+            case 'form':
                 return $item[ $column_name ];
             default:
                 return print_r( $item, true ) ;

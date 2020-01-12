@@ -1,0 +1,89 @@
+/*! 
+Public stylesheet 
+author: Mrinal Haque
+*/
+$label-color: #333;
+
+@mixin border($width, $style, $color, $border-radius) {
+    border: $width $style $color;
+    border-radius: $border-radius;
+}
+
+@keyframes spinner {
+    0% {trasform:rotate(0deg);}
+    100% {trasform:rotate(360deg);}
+}
+
+.small-form {
+    font-family: 'Libre Franklin', sans-serif;
+    label {
+        span {
+            display: inline-block;
+            font-size: 1em;
+            line-height: 1.5;
+            cursor: pointer;
+            font-weight: 700;
+            color: $label-color;
+            margin-bottom: 0.5em;
+            &.required {
+                color: red;
+                margin-left: 0.8em;
+            }
+        }
+    }
+    input,
+    textarea {
+        width: 100%;
+        @include border(1px, solid, #e3e3e3, 3px);
+        margin-bottom: 1em;
+        font-size: 1em;
+        padding: 0.5em;
+        &:focus {
+            border:1px solid $label-color;
+        }
+    }
+    input {
+        min-height: 40px;
+    }
+    textarea {
+        min-height: 200px;
+    }
+    button {
+        cursor: pointer;
+        background-color: $label-color;
+        color: #fff;
+        font-size: 1em;
+        font-weight: 700;
+        padding: .5em 1em;
+        @include border(0, solid, transparent, 3px);
+        transition: background-color 0.5s;
+        &:hover {
+            background-color: #767676;
+        }
+    }
+    .spinner {
+        margin-left: 2em;
+        width: .5em;
+        height: .5em;
+        position: relative;
+        color: #fff;
+        &:after {
+            position: absolute;
+            top: 0;
+            left: 0;
+            content: url(../img/spinner.svg);
+            width: 2em;
+            height: 2em;
+        }
+    }
+    .error-message {
+        font-size: 1em;
+        font-weight: 400;
+        padding: .3em 1.5em;
+        margin: 0;
+        background-color: #f2dede;
+        color: #b94a48;
+        border-left: 5px solid #c73412;
+        width: 100%;
+    }
+}

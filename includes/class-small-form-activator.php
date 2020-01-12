@@ -55,6 +55,7 @@ class Small_Form_Activator {
 		$sql .= "  `email`  VARCHAR(255)  NOT NULL, ";
 		$sql .= "  `desc`  VARCHAR(1024), ";
 		$sql .= " `time` datetime DEFAULT '0000-00-00 00:00:00' NOT NULL, ";
+		$sql .= " `form` VARCHAR(55), ";
         $sql .= "  PRIMARY KEY (`id`) "; 
         $sql .= ") ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ; ";
         require_once( ABSPATH . '/wp-admin/includes/upgrade.php' );

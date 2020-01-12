@@ -1,11 +1,15 @@
 // collect all elements with smallformid data
-var elements = document.querySelectorAll("[data-smallformid]");
+let elements = document.querySelectorAll("[data-smallformid]");
 // loop through each element
 elements.forEach(function(element) {
-  var formId = element.getAttribute("data-smallformid");
+  // 1. get metas from specific form post.
+  // 2. crete vue instance for every element.
+  // 3. make ajax call if email is valid.
+  // 4. make ajax call with email, description and form id.
+  let formId = element.getAttribute("data-smallformid");
   axios.get("/wp-json/wp/v2/small-form/" + formId).then(response => {
-    var small_form_meta = response.data._small_form_meta;
-    var vm = new Vue({
+    let small_form_meta = response.data._small_form_meta;
+    new Vue({
       el: element,
       data: function() {
         return {
@@ -20,14 +24,17 @@ elements.forEach(function(element) {
       },
       methods: {
         submitForm: function() {
+          let hasError = document.querySelector(".error-message");
+          if (hasError) {
+            let element = document.querySelector(".error-message");
+            element.parentNode.removeChild(element);
+          }
           if (this.emailEntry) {
-            var emailValidation = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
+            let emailValidation = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
               this.emailEntry
             )
               ? true
               : false;
-
-            console.log(emailValidation);
             if (emailValidation) {
               document
                 .querySelector(".small-form button")
@@ -35,7 +42,7 @@ elements.forEach(function(element) {
                   "afterend",
                   "<span class='spinner'>Working...</span>"
                 );
-              var queryString =
+              let queryString =
                 "?action=small_form_submit&nonce=" +
                 ajax_object.nonce +
                 "&formid=" +
@@ -47,9 +54,17 @@ elements.forEach(function(element) {
               axios
                 .get(ajax_object.ajax_url + queryString)
                 .then(response => {
-                  var element = document.querySelector(".spinner");
+                  let element = document.querySelector(".spinner");
                   setTimeout(() => {
                     element.parentNode.removeChild(element);
+                    let formElement = document.querySelector(".small-form");
+                    formElement.innerHTML = "";
+                    document
+                      .querySelector(".small-form")
+                      .insertAdjacentHTML(
+                        "afterbegin",
+                        "<div class='success-message'>Thank you.</div>"
+                      );
                   }, 1000);
                 })
                 .catch(error => {
@@ -57,7 +72,7 @@ elements.forEach(function(element) {
                     .querySelector(".small-form button")
                     .insertAdjacentHTML(
                       "beforebegin",
-                      "<span class='error-message'>Can not be save!!!</span>"
+                      "<div class='error-message'>Can not be saved. Please try again.</div>"
                     );
                 });
             } else {
@@ -65,11 +80,10 @@ elements.forEach(function(element) {
                 .querySelector(".small-form input")
                 .insertAdjacentHTML(
                   "afterend",
-                  "<span class='error-message'>Invalid email address</span>"
+                  "<div class='error-message'>Invalid email address</div>"
                 );
             }
           } else {
-            console.log("email can not be empty");
             document
               .querySelector(".small-form input")
               .insertAdjacentHTML(

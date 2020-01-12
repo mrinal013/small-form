@@ -86,4 +86,14 @@ $label-color: #333;
         border-left: 5px solid #c73412;
         width: 100%;
     }
+    .success-message {
+        font-size: 1em;
+        font-weight: 400;
+        padding: .3em 1.5em;
+        margin: 0;
+        background-color: #e3e9dd;
+        color: #011f0f;
+        border-left: 5px solid #011f0f;
+        width: 100%;
+    }
 }

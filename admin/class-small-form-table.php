@@ -1,21 +1,27 @@
 <?php
 namespace Admin;
-
+/**
+ * The entry list class. It extends WP_List_Table class for small-form use.
+ *
+ * @since      1.0.0
+ * @package    Small_Form
+ * @subpackage Small_Form/admin
+ * @author     Mrinal Haque <mrinalhaque99@gmail.com>
+ */
 class Small_Form_Table extends \WP_List_Table {
-    public function __construct()
-    {
-             parent::__construct( array(
-                  'singular'=> 'wp_list_text_link', //Singular label
-                  'plural' => 'wp_list_test_links', //plural label, also this well be one of the table css class
-                  'ajax'   => false //We won't support Ajax for this table
-                  ) );      
-            $this->prepare_items();
-            $this->display();           
-
+    public function __construct() {
+        parent::__construct( array(
+                'singular'=> 'wp_list_text_link', //Singular label
+                'plural' => 'wp_list_test_links', //plural label, also this well be one of the table css class
+                'ajax'   => false //We won't support Ajax for this table
+                ) );      
+        $this->prepare_items();
+        $this->display();          
     }
 
-    function get_columns() {
+    public function get_columns() {
         $columns = array(
+            'cb'        => '<input type="checkbox" />',
             'id'        => __( 'ID','small-form' ),
             'email'     => __( 'Email', 'small-form' ),
             'desc'      => __( 'Description', 'small-form' ),
@@ -25,7 +31,7 @@ class Small_Form_Table extends \WP_List_Table {
         return $columns;
     }
 
-    function column_default( $item, $column_name ) {
+    public function column_default( $item, $column_name ) {
         switch( $column_name ) {
             case 'id':
             case 'email':
@@ -38,7 +44,7 @@ class Small_Form_Table extends \WP_List_Table {
         }
     }
 
-    function prepare_items() {
+    public function prepare_items() {
         global $wpdb;
         $result = $wpdb->get_results ( "
             SELECT * 
@@ -53,5 +59,4 @@ class Small_Form_Table extends \WP_List_Table {
         $this->_column_headers = array($columns, $hidden, $sortable);
         $this->items = $array;
     }
-    
 }

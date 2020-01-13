@@ -13,6 +13,7 @@ elements.forEach(function(element) {
       el: element,
       data: function() {
         return {
+          formId: formId,
           emailEntry: null,
           descEntry: null
         };
@@ -23,7 +24,7 @@ elements.forEach(function(element) {
         this.submitText = small_form_meta.submit_text;
       },
       methods: {
-        submitForm: function() {
+        submitForm: function(event) {
           let hasError = document.querySelector(".error-message");
           if (hasError) {
             let element = document.querySelector(".error-message");
@@ -36,8 +37,8 @@ elements.forEach(function(element) {
               ? true
               : false;
             if (emailValidation) {
-              document
-                .querySelector(".small-form button")
+              event.target.parentElement
+                .querySelector("button")
                 .insertAdjacentHTML(
                   "afterend",
                   "<span class='spinner'>Working...</span>"
@@ -54,38 +55,35 @@ elements.forEach(function(element) {
               axios
                 .get(ajax_object.ajax_url + queryString)
                 .then(response => {
-                  let element = document.querySelector(".spinner");
+                  let element = event.target.parentElement.querySelector(
+                    ".spinner"
+                  );
                   setTimeout(() => {
-                    element.parentNode.removeChild(element);
-                    let formElement = document.querySelector(".small-form");
-                    formElement.innerHTML = "";
-                    document
-                      .querySelector(".small-form")
-                      .insertAdjacentHTML(
-                        "afterbegin",
-                        "<div class='success-message'>Thank you.</div>"
-                      );
+                    event.target.parentElement.insertAdjacentHTML(
+                      "afterbegin",
+                      "<div class='success-message'>Your message has been sent, thanks.</div>"
+                    );
                   }, 1000);
                 })
                 .catch(error => {
-                  document
-                    .querySelector(".small-form button")
+                  event.target.parentElement
+                    .querySelector("button")
                     .insertAdjacentHTML(
                       "beforebegin",
                       "<div class='error-message'>Can not be saved. Please try again.</div>"
                     );
                 });
             } else {
-              document
-                .querySelector(".small-form input")
+              event.target.parentElement
+                .querySelector("input")
                 .insertAdjacentHTML(
                   "afterend",
                   "<div class='error-message'>Invalid email address</div>"
                 );
             }
           } else {
-            document
-              .querySelector(".small-form input")
+            event.target.parentElement
+              .querySelector("input")
               .insertAdjacentHTML(
                 "afterend",
                 "<div class='error-message'>This field is required</div>"

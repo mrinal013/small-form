@@ -1,16 +1,6 @@
 <?php
 namespace Includes;
 /**
- * Register all actions and filters for the plugin
- *
- * @link       mrinalbd.com
- * @since      1.0.0
- *
- * @package    Small_Form
- * @subpackage Small_Form/includes
- */
-
-/**
  * Register all actions and filters for the plugin.
  *
  * Maintain a list of all hooks that are registered throughout

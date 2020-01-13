@@ -1,10 +1,24 @@
 <?php
+/**
+ * Here, namespace is SF_Public because, Public is reserverd word in PHP.
+ * Reference: https://www.php.net/manual/en/reserved.keywords.php
+ */
 namespace SF_Public;
 
+/**
+ * The output of shortcode define in this class.
+ *
+ * @package    Small_Form
+ * @subpackage Small_Form/public
+ * @author     Mrinal Haque <mrinalhaque99@gmail.com>
+ */
 class Small_Form_Shortcode {
 
-    public $form_title;
-
+    /**
+	 * Initialize the class.
+	 *
+	 * @since    1.0.0
+	 */
     public function __construct() {
         add_shortcode( 'small-form', array( $this, 'small_form_shortcode_function' ) );
         add_action( 'wp_ajax_small_form_submit', array( $this, 'small_form_submit' ) );

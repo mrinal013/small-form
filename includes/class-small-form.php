@@ -5,20 +5,6 @@ use Includes\Small_Form_Loader;
 use Includes\Small_Form_i18n;
 use Admin\Small_Form_Admin;
 use SF_Public\Small_Form_Public;
-
-/**
- * The file that defines the core plugin class
- *
- * A class definition that includes attributes and functions used across both the
- * public-facing side of the site and the admin area.
- *
- * @link       mrinalbd.com
- * @since      1.0.0
- *
- * @package    Small_Form
- * @subpackage Small_Form/includes
- */
-
 /**
  * The core plugin class.
  *

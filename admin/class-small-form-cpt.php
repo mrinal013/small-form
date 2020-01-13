@@ -1,6 +1,13 @@
 <?php
 namespace Admin;
-
+/**
+ * The small-form custom post type functionality of the plugin.
+ *
+ *
+ * @package    Small_Form
+ * @subpackage Small_Form/admin
+ * @author     Mrinal Haque <mrinalhaque99@gmail.com>
+ */
 class Small_Form_CPT {
     public function __construct() {
 		add_action( 'init', array( $this, 'small_form_cpt' ) );

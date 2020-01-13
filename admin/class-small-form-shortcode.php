@@ -1,6 +1,13 @@
 <?php
 namespace Admin;
-
+/**
+ * The small-form shortcode metaboxe functionality of the plugin.
+ *
+ * @since       1.0.0
+ * @package    Small_Form
+ * @subpackage Small_Form/admin
+ * @author     Mrinal Haque <mrinalhaque99@gmail.com>
+ */
 class Small_Form_Shortcode {
     public function __construct() {
         if( ! empty($_GET['post'] ) ) {

@@ -1,1 +1,1 @@
-Small Form plugin developed for gain solutions practical test.
+## Please rename it to small-form after download from github

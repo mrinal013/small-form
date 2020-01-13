@@ -55,14 +55,15 @@ elements.forEach(function(element) {
               axios
                 .get(ajax_object.ajax_url + queryString)
                 .then(response => {
-                  let element = event.target.parentElement.querySelector(
-                    ".spinner"
-                  );
                   setTimeout(() => {
                     event.target.parentElement.insertAdjacentHTML(
                       "afterbegin",
                       "<div class='success-message'>Your message has been sent, thanks.</div>"
                     );
+                    let element = event.target.parentElement.querySelector(
+                      ".spinner"
+                    );
+                    element.parentNode.removeChild(element);
                   }, 1000);
                 })
                 .catch(error => {

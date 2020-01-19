@@ -15,17 +15,26 @@ class Small_Form_CPT {
 		add_filter( 'screen_options_show_screen', array( $this, 'small_form_disable_screen_options' ));
 		add_filter('post_row_actions', array( $this, 'remove_quick_edit' ) ,10,2);
 		add_action('admin_notices', array( $this, 'small_form_admin_header'));
+		add_action('admin_head', array( $this, 'remove_date_drop'));
+		add_filter( 'bulk_actions-edit-small-form', array( $this, 'register_small_form_bulk_actions' ) );
 	}
 
 	public function remove_quick_edit( $actions, $post ) {
 		if ($post->post_type=='small-form') {
+			$actions['entries'] = '<a href="#" title="" rel="permalink" class="entries">Entries</a>';
+			$actions['deactivate'] = '<a href="#" title="" rel="permalink" class="deactivate">Deactivate</a>';
+			$actions['duplicate'] = '<a href="#" title="" rel="permalink" class="duplicate">Duplicate</a>';
+			$trash = $actions['trash'];
 			unset($actions['inline hide-if-no-js']);
+			unset($actions['trash']);
+            $actions['trash']=$trash;
 		}
 		return $actions;
 	}
 	
 	public function small_form_admin_header() {
 		$screen = get_current_screen();
+		// wp_die($screen->id);
 		$small_form_header_pages = array(
 			'edit-small-form',
 			'small-form',
@@ -55,7 +64,7 @@ class Small_Form_CPT {
 			'edit_item'             => __( 'Edit Small Form', 'textdomain' ),
 			'view_item'             => __( 'View Small Form', 'textdomain' ),
 			'all_items'             => __( 'All Small Forms', 'textdomain' ),
-			'search_items'          => __( 'Search Small Forms', 'textdomain' ),
+			'search_items'          => __( 'Search', 'textdomain' ),
 			'parent_item_colon'     => __( 'Parent Small Forms:', 'textdomain' ),
 			'not_found'             => __( 'No Small Forms found.', 'textdomain' ),
 			'not_found_in_trash'    => __( 'No Small Forms found in Trash.', 'textdomain' ),
@@ -86,10 +95,10 @@ class Small_Form_CPT {
 			'hierarchical'      => false,
 			'menu_position'     => null,
 			'supports'          => array( 'title' ),
-			'capabilities' => array(
-				'create_posts' => false
+			'capabilities' 		=> array(
+				'create_posts' 	=> false
 			),
-			'map_meta_cap' => true,
+			'map_meta_cap' 		=> true,
 		);
 	 
 		register_post_type( 'small-form', $args );
@@ -109,5 +118,23 @@ class Small_Form_CPT {
 			return false;
 		}
 		return $show_screen;
+	}
+
+	public function remove_date_drop() {
+		global $pagenow;
+		if (( $pagenow == 'edit.php' ) && ( !empty( $_GET['post_type'] )) && ($_GET['post_type'] == 'small-form')) {
+			add_filter('months_dropdown_results', '__return_empty_array');
+		}
+	}
+
+	public function register_small_form_bulk_actions($bulk_actions) {
+		$trash = $bulk_actions['trash'];
+		unset($bulk_actions['edit']);
+		unset($bulk_actions['trash']);
+		$bulk_actions['activate'] = __( 'Activate', 'small-form');
+		$bulk_actions['deactivate'] = __( 'Deactivate', 'small-form');
+		$bulk_actions['duplicate'] = __( 'Duplicate', 'small-form');
+		$bulk_actions['trash'] = $trash;
+		return $bulk_actions;
 	}
 }

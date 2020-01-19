@@ -12,7 +12,36 @@ class Small_Form_CPT {
     public function __construct() {
 		add_action( 'init', array( $this, 'small_form_cpt' ) );
 		add_filter('post_updated_messages', array( $this, 'small_form_messages'));
-    }
+		add_filter( 'screen_options_show_screen', array( $this, 'small_form_disable_screen_options' ));
+		add_filter('post_row_actions', array( $this, 'remove_quick_edit' ) ,10,2);
+		add_action('admin_notices', array( $this, 'small_form_admin_header'));
+	}
+
+	public function remove_quick_edit( $actions, $post ) {
+		if ($post->post_type=='small-form') {
+			unset($actions['inline hide-if-no-js']);
+		}
+		return $actions;
+	}
+	
+	public function small_form_admin_header() {
+		$screen = get_current_screen();
+		$small_form_header_pages = array(
+			'edit-small-form',
+			'small-form',
+			'small-form_page_small-form-entries-table'
+		);
+		$is_small_form_header = ( in_array( $screen->id, $small_form_header_pages ) ) ? true : false;
+		if( $is_small_form_header ) {
+			?>
+			<div class="error">
+        <p>
+        An error message
+        </p>
+      </div>
+			<?php
+		}
+	}
 
     public function small_form_cpt() {
         $labels = array(
@@ -54,9 +83,13 @@ class Small_Form_CPT {
 			'rewrite'           => array( 'slug' => 'small-form' ),
 			'capability_type'   => 'post',
 			'has_archive'       => true,
-			'hierarchical'      => true,
+			'hierarchical'      => false,
 			'menu_position'     => null,
 			'supports'          => array( 'title' ),
+			'capabilities' => array(
+				'create_posts' => false
+			),
+			'map_meta_cap' => true,
 		);
 	 
 		register_post_type( 'small-form', $args );
@@ -68,5 +101,13 @@ class Small_Form_CPT {
 			6 => __('Small Form Published.', 'small-form'),
 		);
 		return $messages;
+	}
+
+	public function small_form_disable_screen_options( $show_screen ) {
+		global $pagenow;
+		if (( $pagenow == 'edit.php' ) && ( !empty( $_GET['post_type'] )) && ($_GET['post_type'] == 'small-form')) {
+			return false;
+		}
+		return $show_screen;
 	}
 }

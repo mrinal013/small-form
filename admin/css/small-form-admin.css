@@ -2,6 +2,8 @@
  * All of the CSS for your admin-specific functionality should be
  * included in this file.
  */
+ [v-cloak] { display: none; }
+ .page-title-action { display:none; }
  .v-application--wrap {
      min-height: 1px;
      margin-top: 1em;

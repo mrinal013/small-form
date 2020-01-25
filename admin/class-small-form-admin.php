@@ -42,7 +42,8 @@ class Small_Form_Admin {
 		'small-form_page_small-form-entries-table',
 		'small-form_page_small-form-settings',
 		'small-form_page_small-form-tools',
-		'small-form_page_small-form-help'
+		'small-form_page_small-form-help',
+		'small-form_page_small-form-dashboard'
 	);
 
 	/**
@@ -64,7 +65,8 @@ class Small_Form_Admin {
 
 		if( ! class_exists( 'WP_List_Table' ) ) {
             require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
-        }
+		}
+		new Small_Form_Dashboard();
 		new Small_Form_Entry();
 		new Small_Form_Settings();
 		new Small_Form_Tools();
@@ -73,6 +75,32 @@ class Small_Form_Admin {
 		add_action('admin_notices', array( $this, 'small_form_admin_header'));
 		add_filter( 'screen_options_show_screen', array( $this, 'small_form_disable_screen_options' ));
 		add_filter( "views_edit-small-form", array( $this, 'small_form_modified_views' ));
+		add_action('custom_menu_order', array( $this, 'small_form_submenu_order'));
+	}
+
+	public function small_form_submenu_order() {
+		global $submenu;
+		$newSubmenu = [];
+		foreach( $submenu as $key=>$value ) {
+			if( $key == 'edit.php?post_type=small-form' ) {
+				$newSubmenu[0] = $value[11];
+				$newSubmenu[1] = $value[5];
+				$newSubmenu[2] = $value[10];
+				$newSubmenu[3] = $value[12];
+				$newSubmenu[4] = $value[13];
+				$newSubmenu[5] = $value[14];
+				$newSubmenu[6] = $value[15];
+				// $value[1] = $value[11];
+				$submenu['edit.php?post_type=small-form'] = $newSubmenu;
+			break;
+				// echo '<pre>';
+				// print_r($value[11]);
+				// wp_die();
+			}
+		}
+		// echo '<pre>';
+		// print_r($submenu);
+		// wp_die();
 	}
 
 	public function small_form_admin_header() {
@@ -80,7 +108,7 @@ class Small_Form_Admin {
 		$is_small_form = ( in_array( $screen->id, $this->small_form_pages ) ) ? true : false;
 		if( $is_small_form ) {
 			?>
-			<div id="app">
+			<div id="app" v-cloak>
   <v-app id="inspire">
     <v-card
       color="grey lighten-4"
@@ -88,22 +116,38 @@ class Small_Form_Admin {
       tile
     >
       <v-toolbar dense>
-        <v-app-bar-nav-icon></v-app-bar-nav-icon>
+		  Small Form
+	  <v-menu>
+        <template v-slot:activator="{ on: menu }">
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on: tooltip }">
+              <v-btn
+                
+                
+                v-on="{ ...tooltip, ...menu }"
+              ><v-app-bar-nav-icon></v-app-bar-nav-icon></v-btn>
+            </template>
+            <span>Im A ToolTip</span>
+          </v-tooltip>
+        </template>
+        <v-list>
+          <v-list-item
+            v-for="(item, index) in items"
+            :key="index"
+            @click=""
+          >
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+        <!-- <v-app-bar-nav-icon></v-app-bar-nav-icon> -->
   
         <!-- <v-toolbar-title>Title</v-toolbar-title> -->
   
-        <!-- <v-spacer></v-spacer> -->
+        <v-spacer></v-spacer>
   
         <v-btn icon>
-          <v-icon>mdi-magnify</v-icon>
-        </v-btn>
-  
-        <v-btn icon>
-          <v-icon>mdi-heart</v-icon>
-        </v-btn>
-  
-        <v-btn icon>
-          <v-icon>mdi-dots-vertical</v-icon>
+          <v-icon>mdi-help</v-icon>
         </v-btn>
       </v-toolbar>
     </v-card>

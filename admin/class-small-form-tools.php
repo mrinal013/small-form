@@ -1,16 +1,15 @@
 <?php
 namespace Admin;
 
-use Admin\Small_Form_Table;
 /**
- * The entry page functionality of the plugin.
+ * The settings page functionality of the plugin.
  *
  * @since       1.0.0
  * @package    Small_Form
  * @subpackage Small_Form/admin
  * @author     Mrinal Haque <mrinalhaque99@gmail.com>
  */
-class Small_Form_Entry {
+class Small_Form_Tools {
     public function __construct() {
         add_action( 'admin_menu', array(&$this, 'register_sub_menu') );
     }
@@ -22,17 +21,17 @@ class Small_Form_Entry {
     public function register_sub_menu() {
         add_submenu_page( 
             'edit.php?post_type=small-form', 
-            __('Entries', 'small-form'),
-            __('Entries', 'small-form'),
+            __('Tools', 'small-form'),
+            __('Tools', 'small-form'),
             'manage_options',
-            'small-form-entries-table',
-            array(&$this, 'small_form_table_page')
+            'small-form-tools',
+            array(&$this, 'small_form_tools')
         );
     }
 
-    public function small_form_table_page() {
-        if( class_exists('WP_List_Table')) {
-            new Small_Form_Table();
-        }
+    public function small_form_tools() {
+        ?>
+        <h1>Tools page</h1>
+        <?php
     }
 }

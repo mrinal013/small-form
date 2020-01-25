@@ -2,3 +2,8 @@
  * All of the CSS for your admin-specific functionality should be
  * included in this file.
  */
+ .v-application--wrap {
+     min-height: 1px;
+     margin-top: 1em;
+     padding-right: 1em;
+ }

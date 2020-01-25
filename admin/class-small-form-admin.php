@@ -1,6 +1,7 @@
 <?php
 namespace Admin;
 
+use Admin\Small_Form_Head;
 use Admin\Small_Form_CPT;
 use Admin\Small_Form_MB;
 use Admin\Small_Form_Shortcode;
@@ -35,6 +36,15 @@ class Small_Form_Admin {
 	 */
 	private $version;
 
+	private $small_form_pages = array(
+		'edit-small-form',
+		'small-form',
+		'small-form_page_small-form-entries-table',
+		'small-form_page_small-form-settings',
+		'small-form_page_small-form-tools',
+		'small-form_page_small-form-help'
+	);
+
 	/**
 	 * Initialize the class and set its properties.
 	 *
@@ -47,7 +57,7 @@ class Small_Form_Admin {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 
-
+		// new Small_Form_Head();
 		new Small_Form_CPT();
 		new Small_Form_MB();
 		new Small_Form_Shortcode();
@@ -56,7 +66,67 @@ class Small_Form_Admin {
             require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
         }
 		new Small_Form_Entry();
+		new Small_Form_Settings();
+		new Small_Form_Tools();
+		new Small_Form_Help();
+		
+		add_action('admin_notices', array( $this, 'small_form_admin_header'));
+		add_filter( 'screen_options_show_screen', array( $this, 'small_form_disable_screen_options' ));
+		add_filter( "views_edit-small-form", array( $this, 'small_form_modified_views' ));
+	}
 
+	public function small_form_admin_header() {
+		$screen = get_current_screen();
+		$is_small_form = ( in_array( $screen->id, $this->small_form_pages ) ) ? true : false;
+		if( $is_small_form ) {
+			?>
+			<div id="app">
+  <v-app id="inspire">
+    <v-card
+      color="grey lighten-4"
+      flat
+      tile
+    >
+      <v-toolbar dense>
+        <v-app-bar-nav-icon></v-app-bar-nav-icon>
+  
+        <!-- <v-toolbar-title>Title</v-toolbar-title> -->
+  
+        <!-- <v-spacer></v-spacer> -->
+  
+        <v-btn icon>
+          <v-icon>mdi-magnify</v-icon>
+        </v-btn>
+  
+        <v-btn icon>
+          <v-icon>mdi-heart</v-icon>
+        </v-btn>
+  
+        <v-btn icon>
+          <v-icon>mdi-dots-vertical</v-icon>
+        </v-btn>
+      </v-toolbar>
+    </v-card>
+  </v-app>
+</div>
+			<?php
+		}
+	}
+
+	public function small_form_disable_screen_options( $show_screen ) {
+		$screen = get_current_screen();
+		$is_small_form = ( in_array( $screen->id, $this->small_form_pages ) ) ? true : false;
+		if( $is_small_form ) {
+			return false;
+		}
+		return $show_screen;
+	}
+
+	public function small_form_modified_views( $views ) {
+		$views['publish'] = str_replace( 'Published ', 'Active ', $views['publish'] );
+		$views['inactive'] = '<a href="#">Inactive</a>';
+		$views['trash'] = '<a href="#">Trash</a>';
+		return $views;
 	}
 
 	/**
@@ -64,7 +134,7 @@ class Small_Form_Admin {
 	 *
 	 * @since    1.0.0
 	 */
-	public function enqueue_styles() {
+	public function enqueue_styles($hook) {
 
 		/**
 		 *
@@ -76,8 +146,15 @@ class Small_Form_Admin {
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
-
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/small-form-admin.css', array(), $this->version, 'all' );
+		$screen = get_current_screen();
+		$is_small_form = ( in_array( $screen->id, $this->small_form_pages ) ) ? true : false;
+		// wp_die($is_small_form);
+		if( $is_small_form ) {
+			wp_enqueue_style( 'mat-font', 'https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900', array(), $this->version, 'all' );
+			wp_enqueue_style( 'mat-icon', 'https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css', array(), $this->version, 'all' );
+			wp_enqueue_style( 'vuetify-css', 'https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css', array(), $this->version, 'all' );
+			wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/small-form-admin.css', array(), $this->version, 'all' );
+		}
 
 	}
 
@@ -99,7 +176,15 @@ class Small_Form_Admin {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/small-form-admin.js', array( 'jquery' ), $this->version, false );
+		$screen = get_current_screen();
+		$is_small_form = ( in_array( $screen->id, $this->small_form_pages ) ) ? true : false;
+		if($is_small_form) {
+
+			wp_enqueue_script( 'vue', 'https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js', array(), $this->version, true );
+			wp_enqueue_script( 'vuetify', 'https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js', array('vue'), $this->version, true );
+			wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/small-form-admin.js', array( 'vuetify' ), $this->version, true );
+		}
+
 
 	}
 

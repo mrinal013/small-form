@@ -12,9 +12,8 @@ class Small_Form_CPT {
     public function __construct() {
 		add_action( 'init', array( $this, 'small_form_cpt' ) );
 		add_filter('post_updated_messages', array( $this, 'small_form_messages'));
-		add_filter( 'screen_options_show_screen', array( $this, 'small_form_disable_screen_options' ));
+		
 		add_filter('post_row_actions', array( $this, 'remove_quick_edit' ) ,10,2);
-		add_action('admin_notices', array( $this, 'small_form_admin_header'));
 		add_action('admin_head', array( $this, 'remove_date_drop'));
 		add_filter( 'bulk_actions-edit-small-form', array( $this, 'register_small_form_bulk_actions' ) );
 	}
@@ -32,36 +31,16 @@ class Small_Form_CPT {
 		return $actions;
 	}
 	
-	public function small_form_admin_header() {
-		$screen = get_current_screen();
-		// wp_die($screen->id);
-		$small_form_header_pages = array(
-			'edit-small-form',
-			'small-form',
-			'small-form_page_small-form-entries-table'
-		);
-		$is_small_form_header = ( in_array( $screen->id, $small_form_header_pages ) ) ? true : false;
-		if( $is_small_form_header ) {
-			?>
-			<div class="error">
-        <p>
-        An error message
-        </p>
-      </div>
-			<?php
-		}
-	}
-
     public function small_form_cpt() {
         $labels = array(
-			'name'                  => _x( 'Small Forms', 'Post type general name', 'textdomain' ),
+			'name'                  => _x( '', 'Post type general name', 'textdomain' ),
 			'singular_name'         => _x( 'Small Form', 'Post type singular name', 'textdomain' ),
 			'menu_name'             => _x( 'Small Forms', 'Admin Menu text', 'textdomain' ),
 			'name_admin_bar'        => _x( 'Small Form', 'Add New on Toolbar', 'textdomain' ),
-			'add_new'               => __( 'Add New Small Form', 'textdomain' ),
+			'add_new'               => __( 'Add New', 'textdomain' ),
 			'add_new_item'          => __( 'Add New Small Form', 'textdomain' ),
 			'new_item'              => __( 'New Small Form', 'textdomain' ),
-			'edit_item'             => __( 'Edit Small Form', 'textdomain' ),
+			'edit_item'             => __( '', 'textdomain' ),
 			'view_item'             => __( 'View Small Form', 'textdomain' ),
 			'all_items'             => __( 'All Small Forms', 'textdomain' ),
 			'search_items'          => __( 'Search', 'textdomain' ),
@@ -96,7 +75,7 @@ class Small_Form_CPT {
 			'menu_position'     => null,
 			'supports'          => array( 'title' ),
 			'capabilities' 		=> array(
-				'create_posts' 	=> false
+				'create_posts' 	=> true
 			),
 			'map_meta_cap' 		=> true,
 		);
@@ -112,13 +91,7 @@ class Small_Form_CPT {
 		return $messages;
 	}
 
-	public function small_form_disable_screen_options( $show_screen ) {
-		global $pagenow;
-		if (( $pagenow == 'edit.php' ) && ( !empty( $_GET['post_type'] )) && ($_GET['post_type'] == 'small-form')) {
-			return false;
-		}
-		return $show_screen;
-	}
+	
 
 	public function remove_date_drop() {
 		global $pagenow;

@@ -4,6 +4,7 @@
  */
  [v-cloak] { display: none; }
  .page-title-action { display:none; }
+ #submitdiv { display: none; }
  .v-application--wrap {
      min-height: 1px;
      margin-top: 1em;
